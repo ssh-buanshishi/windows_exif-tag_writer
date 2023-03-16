@@ -6,6 +6,8 @@
 运行".py"脚本需要额外安装的python库：
 piexif、pyexiv2
 
+
+
 编译指令：
 pyinstaller -D "win_exif_tag_writer.py"
 
