@@ -40,7 +40,7 @@ pyinstaller -D "win_exif_tag_writer.py"
 
 文件列表：
 1.源码文件：win_exif_tag_writer.py
-2.命令行帮助文件：win_exif_tag_writer.py
+2.命令行使用帮助文件：命令行帮助.txt
 3.python库安装参考文件：requirements.txt
   用法： pip install -r requirements.txt
 4.开源证书：LICENSE
