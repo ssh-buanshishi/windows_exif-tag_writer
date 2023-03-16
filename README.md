@@ -1,4 +1,4 @@
-# win_exif_tag_writer
+# windows_exif-tag_writer
 本程序用以向jpg、tiff图片文件写入windows系统专属的exif标签。
 
 本程序（.py和.exe）需要在Windows系统下运行，建议Win7及以上（最好是Win10）。
@@ -41,6 +41,9 @@ pyinstaller -D "win_exif_tag_writer.py"
 文件列表：
 1.源码文件：win_exif_tag_writer.py
 2.命令行帮助文件：win_exif_tag_writer.py
+3.python库安装参考文件：requirements.txt
+  用法： pip install -r requirements.txt
+4.开源证书：LICENSE
 
 本人的代码编辑和运行环境：
 Python版本：Python_3.8.6_x64
