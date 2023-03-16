@@ -14,17 +14,25 @@ pyinstaller -D "win_exif_tag_writer.py"
 ★☆ 注意！！！如果需要编译，还需要调整pyexiv2库，不然编译出来会找不到运行库！！！ ★☆
 
 调整方法如下：
+
 1.进入python（python.exe）所在的目录；
+
 2.顺着路径"Lib\site-packages\pyexiv2"，来到“pyexiv2库文件夹”，把这个位置记为“pyexiv2库文件夹”；
+
 3.进入这里的"lib"文件夹，将文件"exiv2.dll"、"exiv2api.cpp"和"README.md"移动到上一级文件夹，也就是第一步里的“pyexiv2库文件夹”；
+
 4.移动文件完成后，回到第三步的"lib"文件夹，继续深入，进入"py3.8-win"文件夹，将文件"exiv2api.pyd"移动到第一步里的“pyexiv2库文件夹”；
+
 5.回到第一步里的“pyexiv2的库文件夹”，删除"lib"文件夹（此时这个文件夹里只有不重要的缓存文件了）；
+
 6.至此，完成了重要文件的移动。整个移动过程可以理解为把重要的东西全部转移到“根目录”下，方便编译时访问。
+
 7.用趁手的.py代码工具打开“pyexiv2库文件夹”下的"core.py"，
   将第四行的：
   from .lib import exiv2api
   去掉“lib”字样，改为：
   from . import exiv2api
+
 8.保存更改过后的"core.py"，退出编辑工具。至此，所有调整工作全部完成。
 
 
