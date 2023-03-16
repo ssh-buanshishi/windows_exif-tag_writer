@@ -1,0 +1,224 @@
+usage: 
+ 
+========================================================================================================
+
+介绍：
+  本程序用以向jpg、tiff图片文件写入windows系统专属的exif标签。
+ 
+注意事项：
+  1.本程序采用的是覆盖的方式对单个exif标签进行写入，被写入的exif标签之前的内容会被清除（如果exif能正确识别的话），
+    其他标签的值则会被保留，这点可以放心，不会一次性把所有其他标签全都擦除掉。
+ 
+  2.如果之前用windows自带的图片属性编辑工具，插入或修改过本程序帮助里提到的exif标签（尤其
+    是“标题”、“作者”、“标记”）,且标签里有文本内容的话，由于用windows自带工具写入的标签属性的exif格式
+    和本程序接受的格式有差异（表现在图片文件的二进制里，对比用本程序插入属性的图片，经过windows插入属性的图片
+    在图片文件头部会多出一大段空白和形似“<xxx>.....</xxx>”的类xml标签），所以用本程序有很大可能是直接覆盖不了
+    这些标签的内容的（表现在windows的图片文件属性里，此标签的值没有发生变化）。
+  【 我这边用一个jpg文件测试了一下，对原来有文本内容的标签，用此程序操作后，“标题”、“作者”标签的文本内容不变，
+     “标记”被追加了一个值，“备注”和“主题”则能够成功覆盖 】
+ 
+    ★☆ 所以建议对属性空白的图片使用该程序，比如刚刚生成或刚刚拍摄的图片；    ★☆
+    ★☆ 或者在写入标签前，用windows自带的工具或者其他工具（如“ExifCleaner”，★☆
+    ★☆    但是使用“ExifCleaner”会把所有的exif标签全删除掉），手动清除      ★☆
+    ★☆ 之前用windows自带工具插入的这些标签的值。                             ★☆
+  【 我这边用一个jpg文件测试了一下，用windows自带工具清除了windows工具自身之前写入的标签属性后，
+    是能够用此程序写入标签值的 】
+ 
+  3.是“2.”的补充说明：之前经过本程序操作的图片，只要不用windows自带的图片属性编辑工具进行编辑，
+    再次运行此程序后，是能够覆盖之前标签里的内容的。
+ 
+  4.程序支持从其他路径调用，以下面展示的cmd窗口示例为例：
+
+=========================================================================================
+ Microsoft Windows [版本 10.0.19044.1706]
+ (c) Microsoft Corporation。保留所有权利。
+ 
+ E:\【存放图片的文件夹】> "D:\win_exif_tag_writer\bin\win_exif_tag_writer.exe" -write "123456_test" -to "1.jpg" -tag "标记"
+ 
+=========================================================================================
+
+  ★☆ 图片文件路径支持相对路径，如上面的例子所示。                                                        ★☆
+  ★☆ 所以完全可以将本程序的路径添加进系统环境变量“path”中。                                            ★☆
+  ★☆ 这样就能直接在cmd窗口中输入："win_exif_tag_writer.exe" -write "123456_test" -to "1.jpg" -tag "标记" ★☆
+ 
+ 
+ 
+ 
+
+参数说明：
+  本程序的命令行由4个主要参数组成，其中2个为必需参数，另外2个为可选参数。
+  还有一个获取帮助的参数"-h"（python库自带的）。
+  其中参数的说明如下方所示：
+
+ 
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i FILE, -I FILE, --i FILE, --I FILE, -to FILE, -TO FILE, -To FILE, --to FILE, --TO FILE, --To FILE, -file FILE, -FILE FILE, -File FILE, --file FILE, --FILE FILE, --File FILE, -to_file FILE, -TO_FILE FILE, -To_File FILE, --to_file FILE, --TO_FILE FILE, --To_File FILE, -to-file FILE, -TO-FILE FILE, -To-File FILE, --to-file FILE, --TO-FILE FILE, --To-File FILE, -img FILE, -IMG FILE, -Img FILE, --img FILE, --IMG FILE, --Img FILE, -to_img FILE, -TO_IMG FILE, -To_Img FILE, --to_img FILE, --TO_IMG FILE, --To_Img FILE, -to-img FILE, -TO-IMG FILE, -To-Img FILE, --to-img FILE, --TO-IMG FILE, --To-Img FILE, -jpg FILE, -JPG FILE, -jpg FILE, --jpg FILE, --JPG FILE, --jpg FILE, -to_jpg FILE, -TO_JPG FILE, -To_Jpg FILE, --to_jpg FILE, --TO_JPG FILE, --To_Jpg FILE, -to-jpg FILE, -TO-JPG FILE, -To-Jpg FILE, --to-jpg FILE, --TO-JPG FILE, --To-Jpg FILE
+                        
+                        参数一、指定图片文件路径（必要的命令关键字！）：
+                        
+                        格式：【参数命令关键字】+[空格]+【图片文件路径】
+                        上面列出的命令关键字均可使用，字母不区分大小写。
+                        
+                        ★☆【图片文件路径】支持相对路径。★☆
+                        
+                        举例，指定内容所写入到的exif项目名称（标题）：
+                          1. -i "D:\123\456.jpg" 
+                          2. -to "D:\123\456.jpg" 
+                          3. -img "folder\test.jpg" 
+                          4. -file "D:\123\456.jpg" 
+                        
+                        {建议给输入的路径前后加上英文双引号""，命令关键字可不加""。}
+                        
+                        
+                        
+                        
+                        
+  -write CONTENT, -WRITE CONTENT, -Write CONTENT, --write CONTENT, --WRITE CONTENT, --Write CONTENT, -content CONTENT, -CONTENT CONTENT, -Content CONTENT, -text CONTENT, -TEXT CONTENT, -Text CONTENT, -string CONTENT, -STRING CONTENT, -String CONTENT, -str CONTENT, -STR CONTENT, -Str CONTENT, --content CONTENT, --CONTENT CONTENT, --Content CONTENT, --text CONTENT, --TEXT CONTENT, --Text CONTENT, --string CONTENT, --STRING CONTENT, --String CONTENT, --str CONTENT, --STR CONTENT, --Str CONTENT
+                        
+                        参数二、指定写入到exif标签里的文本内容（必要的命令参数！）：
+                        
+                        格式：【参数命令关键字】+[空格]+【文本内容】
+                        上面列出的命令关键字均可使用，字母不区分大小写。
+                        
+                        所有输入的文本内容有且仅有一个字符串。
+                        
+                        举例：
+                        1. -content "123456测试" 
+                        2. --text "123456" 
+                        3. -write "2023-01-01 00:00:01" 
+                        4. --string "abcdefgh" 
+                        
+                        {建议给输入的内容前后加上英文双引号""，命令关键字可不加""。}
+                        
+                        
+                        
+                        
+                        
+  -tag TAG, -TAG TAG, -Tag TAG, --tag TAG, --TAG TAG, --Tag TAG, -write_tag TAG, -WRITE_TAG TAG, -Write_Tag TAG, -write-tag TAG, -WRITE-TAG TAG, -Write-Tag TAG, --write_tag TAG, --WRITE_TAG TAG, --Write_Tag TAG, --write-tag TAG, --WRITE-TAG TAG, --Write-Tag TAG, -to_tag TAG, -TO_TAG TAG, -To_Tag TAG, -to-tag TAG, -TO-TAG TAG, -To-Tag TAG, --to_tag TAG, --TO_TAG TAG, --To_Tag TAG, --to-tag TAG, --TO-TAG TAG, --To-Tag TAG
+                        
+                        参数三、指定文本内容所写入到的exif标签的名称（可选，非必要的命令参数）：
+                        
+                        格式：【参数命令关键字】+[空格]+【选中的exif标签名称、代号或编号】
+                        上面列出的命令关键字均可使用，字母不区分大小写。
+                        
+                        下面列出的是每一类标签所对应的名称、代号或编号的可用值，输入值用“【】”括出。
+                        标题:【标题】、【1】、【40091】、【Title】、【XPTitle】；
+                        备注:【备注】、【2】、【40092】、【Comment】、【XPComment】；
+                        作者:【作者】、【3】、【40093】、【Author】、【XPAuthor】；
+                        标记:【标记】、【4】、【40094】、【Keywords】、【XPKeywords】；
+                        主题:【主题】、【5】、【40095】、【Subject】、【XPSubject】。
+                        
+                        举例，指定文本内容所写入到的exif标签为【标题】：
+                          1. -write_tag "标题" 
+                          2. --write_tag "Title" 
+                          3. -tag "标题" 
+                          4. --tag "1" 
+                          5. -to_tag "40091" 
+                          6. --to_tag "XPTitle" 
+                        
+                        ★☆ 注意！如果没有这个参数，默认情况下，程序会选择：【备注】 ★☆
+                        {建议给输入的内容前后加上英文双引号""，命令关键字可不加""。}
+                        
+                        
+                        
+                        
+                        
+  -use LIB, -USE LIB, -Use LIB, --use LIB, --USE LIB, --Use LIB, -lib LIB, -LIB LIB, -Lib LIB, --lib LIB, --LIB LIB, --Lib LIB, -use_lib LIB, -USE_LIB LIB, -Use_Lib LIB, --use-lib LIB, --USE-LIB LIB, --Use-Lib LIB
+                        
+                        参数四、指定用来进行写入操作的python库，相当于模式切换（可选，非必要的命令参数）：
+                        
+                        格式：【参数命令关键字】+[空格]+【用来进行写入操作的python库】
+                        上面列出的命令关键字均可使用，字母不区分大小写。
+                        
+                        下面列出的是每一个python库所对应的可用输入值，输入值用“【】”括出。
+                        piexif: 【1】、【p1】、【pie】、【pi】、【piexif】；
+                        pyexiv2:【2】、【p2】、【pye】、【py】、【pyexiv2】、【py2】。
+                        
+                        举例：
+                        1. -use "2" 
+                        2. --lib "p2" 
+                        3. -use "pyexiv2" 
+                        4. --use_lib "pie" 
+                        
+                        {建议给输入的内容前后加上英文双引号""，命令关键字可不加""。}
+                        
+                        个人建议使用程序默认的python库piexif，也就是如果不需要调整这项设置，不需要加这个参数。
+                        
+                        
+                        
+                        
+                        
+
+命令行格式帮助：
+  本程序的命令行格式十分灵活，同一个参数有很多可用的命令关键字，且所有参数的顺序可以互换。
+  下面仅展示个人推测在逻辑方面比较好理解，容易记住的几种格式方法。
+ 
+  “[ ]”里的是可选的参数，如果可选参数和必选参数一起组成的命令行是比较好记忆的，这个可选参数不会被“[ ]”括出；
+  “{ }”里的是从多个中选取一个，别漏看了大括号前面的“-”。
+
+ 
+方法1：
+      "win_exif_tag_writer.exe" -write 【文本内容】 -{ to / to_file / to_img / to_jpg } 【图片文件路径】 [ -tag 【选中的exif标签名称、代号或编号】 -use 【用来进行写入操作的python库】 ]
+★☆ 注意！“-to”默认指定的是【图片文件路径】，不是【选中的exif标签名称、代号或编号】！  ★☆
+★☆ 如果需要指定标签，需要用“-to_tag”或“-tag”，总之要有"tag"字样。                   ★☆
+
+ 
+方法2：
+      "win_exif_tag_writer.exe" -write 【文本内容】 -to_tag 【选中的exif标签名称、代号或编号】 -{ file / img / jpg } 【图片文件路径】 [ -use 【用来进行写入操作的python库】 ]
+
+ 
+方法3：
+      "win_exif_tag_writer.exe" -{ i / file / img / jpg } 【图片文件路径】 -write 【文本内容】 -to_tag 【选中的exif标签名称、代号或编号】 [ -use 【用来进行写入操作的python库】 ]
+
+ 
+方法4：
+      "win_exif_tag_writer.exe" -{ i / file / img / jpg } 【图片文件路径】 -{ tag / write_tag } 【选中的exif标签名称、代号或编号】 -{ content / text / string } 【文本内容】 [ -use 【用来进行写入操作的python库】 ]
+
+ 
+ 
+ 
+示例：
+(1)
+  "win_exif_tag_writer.exe" -write "abcdefg_test" -to "E:\folder\path\file.jpg"
+说明：将文本内容"abcdefg_test"写入到文件"E:\folder\path\file.jpg"的exif标签“备注”中，
+      没有"-tag"参数的情况下，程序默认选择的是“备注”。
+★☆ 注意！“-to”默认指定的是【图片文件路径】，不是【选中的exif标签名称、代号或编号】！  ★☆
+★☆ 如果需要指定标签，需要用“-to_tag”或“-tag”，总之要有"tag"字样。                   ★☆
+
+ 
+(2)
+  "win_exif_tag_writer.exe" -write "abcdefg_" -to_tag "5" -img "relative_path\file.jpg"
+说明：将文本内容"abcdefg_"写入到文件"relative_path\file.jpg"的exif标签“主题”中，
+      查前面的参数说明，可知“5”对应的是“主题”。
+★☆ 可以使用相对路径 ★☆
+
+ 
+(3)
+  "win_exif_tag_writer.exe" -write "2023-01-01 00:00:01" -to "E:\folder\path\file.jpg" -tag "标记"
+说明：将文本内容"2023-01-01 00:00:01"写入到文件"E:\folder\path\file.jpg"的exif标签“标记”中。
+
+ 
+(4)
+  "win_exif_tag_writer.exe" -img "D:\folder\test.jpg" -write "123456" -to_tag "40093"
+说明：将文本内容"123456"写入到文件"D:\folder\test.jpg"的exif标签“作者”中，
+      查前面的参数说明，可知“40093”对应的是“作者”。
+
+ 
+(5)
+  "win_exif_tag_writer.exe" -i "D:\folder\test.jpg" -write_tag "XPTitle" -text "123456" [ -use "pyexiv2" ]
+说明：将文本内容"123456"写入到文件"D:\folder\test.jpg"的exif标签“标题”中，
+      查前面的参数说明，可知“XPTitle”对应的是“作者”。
+      "-i"也是ffmpeg的导入文件命令，用过ffmpeg的比较好适应，所以加了这个"-i"进来；
+      进行写入操作的是python的pyexiv2库。
+ 
+   【 注：默认情况下用的是另一个piexif库，
+      只有使用"-use"参数（前面提到的“参数四”），
+      且指定为pyexiv2，才会转为用pyexiv2库 】
+// 个人建议使用程序默认的python库piexif，也就是如果不需要调整这项设置，不需要加这个参数。//
+ 
+ 
+========================================================================================================
+ 
+ 
