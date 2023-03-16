@@ -12,6 +12,7 @@ pyinstaller -D "win_exif_tag_writer.py"
 使用"-D"打包成文件夹是为了较快的运行速度，如果使用"-F"，第一次运行速度会很慢，需要大概10秒。
 
 ★☆ 注意！！！如果需要编译，还需要调整pyexiv2库，不然编译出来会找不到运行库！！！ ★☆
+
 调整方法如下：
 1.进入python（python.exe）所在的目录；
 2.顺着路径"Lib\site-packages\pyexiv2"，来到“pyexiv2库文件夹”，把这个位置记为“pyexiv2库文件夹”；
